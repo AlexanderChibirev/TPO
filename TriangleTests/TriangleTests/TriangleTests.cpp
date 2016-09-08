@@ -103,35 +103,22 @@ void DisplayInLogTypeTriangle(float a, float b, float c)
 int main(int argc, char** argv)
 {
 
-	if (argc != 7)
+	if (argc != 4)
 	{
-		std::cout << "Wrong amount of arguments was proposed\nEnter a correct arguments amount please, for example:\n 'х1,у1,х2,у2,х3,у3'";
+		std::cout << "Wrong amount of arguments was proposed\nEnter a correct arguments amount please, for example:\n 'a, b, c'";
 		return 1;
 	}
-	//get argument from .bat file or в прокте вводим данные и запускаем
 	std::string argv1 = argv[1];
 	std::string argv2 = argv[2];
 	std::string argv3 = argv[3];
-	std::string argv4 = argv[4];
-	std::string argv5 = argv[5];
-	std::string argv6 = argv[6];
-	if (WasErrorInput(argv1) || WasErrorInput(argv2) || WasErrorInput(argv3) || WasErrorInput(argv4) || WasErrorInput(argv5) || WasErrorInput(argv6))
+	if (WasErrorInput(argv1) || WasErrorInput(argv2) || WasErrorInput(argv3))
 	{
 		return 1;
 	}
-	//string to double
-	float x1 = std::stof(argv1);
-	float y1 = std::stof(argv2);
-	float x2 = std::stof(argv3);
-	float y2 = std::stof(argv4);
-	float x3 = std::stof(argv5);
-	float y3 = std::stof(argv6);
-	
-	float a = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));//стороны
-	float b = sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3));
-	float c = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2));
-	DisplayInLogTypeTriangle(a, b, c); //вывести в консоль тип треугольника
-	//system("pause");
+	float a = std::stof(argv1);
+	float b = std::stof(argv2);
+	float c = std::stof(argv3);
+	DisplayInLogTypeTriangle(a, b, c);
 	return 0;
 }
 
