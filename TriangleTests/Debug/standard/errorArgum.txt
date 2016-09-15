@@ -1,3 +1,1 @@
-Wrong amount of arguments was proposed
-Enter a correct arguments amount please, for example:
- 'a, b, c'
+”кажите длины сторон в качестве параметров. ‘ормат ввода: triangle.exe a b c

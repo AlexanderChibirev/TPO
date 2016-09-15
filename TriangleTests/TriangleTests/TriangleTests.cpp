@@ -15,8 +15,14 @@ bool isCorrectCoordinate(std::string coord)
 {
 	bool wasDot = false;
 	int i = coord.length();
+
 	while (i--)
 	{
+		int assciCode = static_cast<int> (coord[i]);
+		if (!(assciCode >= -1 && assciCode <= 255)) {
+			std::cout << "'1,2,3' корректно, а то что вы ввели это ";
+			return false;
+		};
 		if (!isdigit(coord[i]))
 		{
 			if (wasDot)
@@ -69,12 +75,12 @@ bool WasErrorInput(std::string coord)
 {
 	if (coord.empty())
 	{
-		std::cout << "coordinate is empty";
+		std::cout << "одна из координат пустая";
 		return true;
 	}
 	if (!isCorrectCoordinate(coord))
 	{
-		std::cout << "coordinate is incorrect";
+		std::cout << "неккоректные координаты";
 		return true;
 	}
 	return false;
@@ -84,28 +90,28 @@ void DisplayInLogTypeTriangle(float a, float b, float c)
 {
 	if (!IsTriange(a, b, c))
 	{
-		std::cout << "not triangle";
+		std::cout << "Не треугольник";
 	}
 	else if (IsTriangeEquilateral(a, b, c))
 	{
-		std::cout << "equilateral triangle";
+		std::cout << "Равносторонний";
 	}
 	else if (IsTriangeIsosceles(a, b, c))
 	{
-		std::cout << "isosceles triangle";
+		std::cout << "Равнобедренный";
 	}
 	else
 	{
-		std::cout << "normal triangle";
+		std::cout << "Простой";
 	}
 }
 
 int main(int argc, char** argv)
 {
-
+	setlocale(LC_ALL, "Russian");
 	if (argc != 4)
 	{
-		std::cout << "Wrong amount of arguments was proposed\nEnter a correct arguments amount please, for example:\n 'a, b, c'";
+		std::cout << "Укажите длины сторон в качестве параметров. Формат ввода: triangle.exe a b c";
 		return 1;
 	}
 	std::string argv1 = argv[1];
