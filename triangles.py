@@ -43,11 +43,13 @@ class Triangle:
 		a = self.triangle[0]
 		b = self.triangle[1]
 		c = self.triangle[2]
-		
-		p = (a+b+c)
-		p = p/2.0
-		S = math.sqrt(p*(p-a)*(p-b)*(p-c))
-		return S
+		p = (a+b+c)/ 2.0
+		result = (p*(p-a)*(p-b)*(p-c))
+		if (result < 0):
+			return "math domain error"
+		else:
+			S = math.sqrt(p*(p-a)*(p-b)*(p-c))
+			return S		
 	
 	def calculateAngle(self, angle):
 		'''
@@ -87,26 +89,10 @@ class Triangle:
 		'''
 			Проверка, что треугольник с введенными сторонами вообще может существовать
 		'''
-		fail = False
 		a = self.triangle[0]
 		b = self.triangle[1]
-		c = self.triangle[2]
-		
-		if (a <= 0):
-			fail = True
-		elif (b <= 0):
-			fail = True
-		elif (c <= 0):
-			fail = True
-		
-		if (a >= b+c):
-			fail = True
-		elif (b >= a+c):
-			fail = True
-		elif (c > a+b):
-			fail = True
-		
-		if (fail):
+		c = self.triangle[2]		
+		if ((a + b <= c) or (a + c <= b) or (b + c <= a)):
 			return False
 		else:
 			return True
@@ -154,12 +140,46 @@ class TriangleTest(unittest.TestCase):
 	def testIsTriangle(self):
 		t = Triangle(2, 3, 4)
 		self.assertTrue(t.isTriangle())
-		
+                # неудовлетворяющий этому условию тест(a + b <= c) or (a + c <= b) or (b + c <= a) функция должна вернуть True
+		t = Triangle(3, 3, 3)
+		self.assertTrue(t.isTriangle())
+                
 	# значение некорректное, это не треугольник, функция isTriangle() должна вернуть false
 	def testIsNotTriangle(self):
 		t = Triangle(2, 3, 5)
 		self.assertFalse(t.isTriangle())
+                #проверка первого условия (a + b <= c) fun = false
+		t = Triangle(2, 1, 4)
+		self.assertFalse(t.isTriangle())
+		t = Triangle(2, 2, 4)
+		self.assertFalse(t.isTriangle())
+		#проверка второго условия (a + c <= b) fun = false
+		t = Triangle(1, 2, 1)
+		self.assertFalse(t.isTriangle())
+		t = Triangle(1, 3, 1)
+		self.assertFalse(t.isTriangle())
+		#проверка третьего условия (b + c <= a) fun = false
+		t = Triangle(8, 4, 4)
+		self.assertFalse(t.isTriangle())
+		t = Triangle(9, 4, 4)
+		self.assertFalse(t.isTriangle())
+
+	# Проверяем, что фунция выдает верный результат
+	def testCalculateSquare(self):
+		t = Triangle(2, 3, 4)
+		self.assertAlmostEqual(t.calculateSquare(), 2.9047375)
+		
+		t = Triangle(3, 3, 3)
+		self.assertAlmostEqual(t.calculateSquare(), 3.89711431)
+
+        # значение некорректное, при рассчете не может посчитать корень из отриц числа, функция calculateSquare() должна вернуть math domain error
+	def testIncorrectParamInFunCalculateSquare(self):
+                #ловим ошибки, когда неккоректные данные		
+		t = Triangle(13, -3, -3)
+		self.assertEqual("math domain error", t.calculateSquare())
+		
 		
 if __name__ == '__main__':
 	unittest.main()
+	
 	
