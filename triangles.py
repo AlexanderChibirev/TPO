@@ -40,16 +40,16 @@ class Triangle:
 		'''
 			расчет площади по формуле Герона
 		'''
+		if not(self.isTriangle()):
+			return "not triangle"
 		a = self.triangle[0]
 		b = self.triangle[1]
 		c = self.triangle[2]
+
 		p = (a+b+c)/ 2.0
 		result = (p*(p-a)*(p-b)*(p-c))
-		if (result < 0):
-			return "math domain error"
-		else:
-			S = math.sqrt(p*(p-a)*(p-b)*(p-c))
-			return S
+		S = math.sqrt(p*(p-a)*(p-b)*(p-c))
+		return S
 	
 	def calculateAngle(self, angle):
 		'''
@@ -58,7 +58,6 @@ class Triangle:
 			Угол находится напротив соответствующей стороны (a, b, c)
 			Возвращает величину угла в градусах
 		'''
-		
 		a = self.triangle[0]
 		b = self.triangle[1]
 		c = self.triangle[2]
@@ -81,7 +80,8 @@ class Triangle:
 			opp = c
 		else:
 			return False
-	
+		if not(self.isTriangle()):
+			return "not triangle"
 		f = (adj1**2 + adj2**2 - opp**2)/(2.0*adj1*adj2)
 		return math.degrees(math.acos(f))
 	
@@ -109,23 +109,18 @@ class Triangle:
 		a = self.triangle[0]
 		b = self.triangle[1]
 		c = self.triangle[2]
-		
-		if ((a == b) and (a == c)):
+		if not(self.isTriangle()):
+			return "not triangle"                        
+		if ((a == b) and (a == c) and(b == c)):
 			type = 'equilateral'
-		elif (a == b) and (a != c):
+		elif (((a == b) and (a != c)) or
+                      ((a == c) and (a != b)) or
+                      ((b == c) and (b != a))):
 			type = 'isosceles'
-		elif (a == c) and (a != b):
-			type = 'isosceles'
-		elif (b == c) and (b != a):
-			type = 'isosceles'
-	
-		if (a**2 == b**2 + c**2):
+		if ((a**2 == b**2 + c**2) or
+                    (b**2 == a**2 + c**2) or
+                    (c**2 == a**2 + b**2)):
 			type = 'right'
-		elif (b*2 == a**2 + c**2):
-			type = 'right'
-		elif (c**2 == a**2 + b**2):
-			type = 'right'
-	
 		return type
 
 
@@ -172,13 +167,13 @@ class TriangleTest(unittest.TestCase):
 		t = Triangle(3, 3, 3)
 		self.assertAlmostEqual(t.calculateSquare(), 3.89711431)
 		
-		t = Triangle(0, 0, 0)
-		self.assertEqual(0, t.calculateSquare())
         # значение некорректное, при рассчете не может посчитать корень из отриц числа, функция calculateSquare() должна вернуть math domain error
 	def testIncorrectParamInCalculateSquare(self):
-                #ловим ошибки, когда неккоректные данные		
+                #ловим сообщние о том, что это не треугольнике		
 		t = Triangle(13, -3, -3)
-		self.assertEqual("math domain error", t.calculateSquare())
+		self.assertEqual("not triangle", t.calculateSquare())
+		t = Triangle(0, 0, 0)
+		self.assertEqual("not triangle", t.calculateSquare())
 
 	# Проверяем, что фунция calculateAngle выдает верный результат
 	def testCalculateAngle(self):
@@ -186,13 +181,46 @@ class TriangleTest(unittest.TestCase):
 		self.assertAlmostEqual(t.calculateAngle("alpha"), 28.9550244)
 		self.assertAlmostEqual(t.calculateAngle("beta"), 46.5674634)
 		self.assertAlmostEqual(t.calculateAngle("gamma"), 104.4775122)
-		
+                
         #Проверяем, что фунция calculateAngle когда неккоректное название угла, возращает False
+	#или когда неверные стороны возвращает not triangle
 	def testIncorrectParamInCalculateAngle(self):
-                #ловим ошибки, когда неккоректные данные		
+                #название угла неккоректно		
 		t = Triangle(13, -3, -3)
 		self.assertFalse(t.calculateAngle("a13lpasdha"))
+		#неверные стороны
+		t = Triangle(0, 0, 0)
+		self.assertEqual("not triangle", t.calculateAngle("alpha"))
 		
+		
+	# Проверяем, что фунция getType выдает верный результат
+	def testGetType(self):
+                #функция getType должна выдавать прямоугольный(right) тип
+                #beta = 90
+		t = Triangle(3, 5, 4)
+		self.assertEqual("right", t.getType())
+		#gamma = 90
+		t = Triangle(4, 3, 5)
+		self.assertEqual("right", t.getType())
+                #alpha = 90
+		t = Triangle(5, 3, 4)
+		self.assertEqual("right", t.getType())
+		#функция getType должна выдавать равнобедренный(isosceles) тип
+		t = Triangle(3, 2, 2)
+		self.assertEqual("isosceles", t.getType())
+		t = Triangle(2, 2, 3)
+		self.assertEqual("isosceles", t.getType())
+		t = Triangle(2, 3, 2)
+		self.assertEqual("isosceles", t.getType())
+                #функция getType должна выдавать равносторонний(equilateral) тип
+		t = Triangle(3, 3, 3)
+		self.assertEqual("equilateral", t.getType())
+                #функция getType должна выдавать просто треугольник(common) тип
+		t = Triangle(2, 3, 4)
+		self.assertEqual("common", t.getType())
+		# значение некорректное, это не треугольник, функция getType() должна вернуть "not triangle"
+		t = Triangle(0, 0, 0)
+		self.assertEqual("not triangle", t.getType())
 		
 if __name__ == '__main__':
 	unittest.main()
