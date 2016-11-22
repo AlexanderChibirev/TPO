@@ -49,7 +49,7 @@ class Triangle:
 			return "math domain error"
 		else:
 			S = math.sqrt(p*(p-a)*(p-b)*(p-c))
-			return S		
+			return S
 	
 	def calculateAngle(self, angle):
 		'''
@@ -73,7 +73,7 @@ class Triangle:
 			opp = a
 		elif (angle == 'beta'):
 			adj1 = a
-			adj1 = c
+			adj2 = c
 			opp = b
 		elif (angle == 'gamma'):
 			adj1 = a
@@ -82,7 +82,7 @@ class Triangle:
 		else:
 			return False
 	
-		f = (adj1**2 + adj2*2 - opp**2)/(2.0*adj1*adj2)
+		f = (adj1**2 + adj2**2 - opp**2)/(2.0*adj1*adj2)
 		return math.degrees(math.acos(f))
 	
 	def isTriangle(self):
@@ -164,19 +164,34 @@ class TriangleTest(unittest.TestCase):
 		t = Triangle(9, 4, 4)
 		self.assertFalse(t.isTriangle())
 
-	# Проверяем, что фунция выдает верный результат
+	# Проверяем, что фунция calculateSquare выдает верный результат
 	def testCalculateSquare(self):
 		t = Triangle(2, 3, 4)
 		self.assertAlmostEqual(t.calculateSquare(), 2.9047375)
 		
 		t = Triangle(3, 3, 3)
 		self.assertAlmostEqual(t.calculateSquare(), 3.89711431)
-
+		
+		t = Triangle(0, 0, 0)
+		self.assertEqual(0, t.calculateSquare())
         # значение некорректное, при рассчете не может посчитать корень из отриц числа, функция calculateSquare() должна вернуть math domain error
-	def testIncorrectParamInFunCalculateSquare(self):
+	def testIncorrectParamInCalculateSquare(self):
                 #ловим ошибки, когда неккоректные данные		
 		t = Triangle(13, -3, -3)
 		self.assertEqual("math domain error", t.calculateSquare())
+
+	# Проверяем, что фунция calculateAngle выдает верный результат
+	def testCalculateAngle(self):
+		t = Triangle(2, 3, 4)
+		self.assertAlmostEqual(t.calculateAngle("alpha"), 28.9550244)
+		self.assertAlmostEqual(t.calculateAngle("beta"), 46.5674634)
+		self.assertAlmostEqual(t.calculateAngle("gamma"), 104.4775122)
+		
+        #Проверяем, что фунция calculateAngle когда неккоректное название угла, возращает False
+	def testIncorrectParamInCalculateAngle(self):
+                #ловим ошибки, когда неккоректные данные		
+		t = Triangle(13, -3, -3)
+		self.assertFalse(t.calculateAngle("a13lpasdha"))
 		
 		
 if __name__ == '__main__':
