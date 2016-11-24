@@ -16,17 +16,6 @@ def CheckReference(page):
     code = ""
     try:
         code = urllib2.urlopen(page).getcode()
-        # 2xx - Success
-        # 301 Moved Permanently — запрошенный документ был окончательно перенесен на новый URI,
-        #  указанный в поле Location заголовка. Некоторые клиенты некорректно ведут себя при
-        # обработке данного кода. Появился в HTTP/1.0.
-
-        # 302 Found, 302 Moved Temporarily — запрошенный документ временно доступен
-        # по другому URI, указанному в заголовке в поле Location. Этот код может
-        # быть использован, например, при управляемом сервером согласовании
-        # содержимого. Некоторые клиенты некорректно ведут себя при обработке
-        # данного кода. Введено в HTTP/1.0.
-
         status = str(code)
         if (code not in [200, 301, 302]):
             if (page + " " + status) not in failedUrl:
@@ -41,17 +30,12 @@ def CheckReference(page):
     except BaseException as err:
         if (page + " " + err.__str__()) not in failedUrl:
             failedUrl.append(page + " " + err.__str__())
-        """
-        "Невозможно открыть указанную страницу {0}.\n" \
-        "Пожалуйста, проверьте соединение с интернетом.".format(page)
-        """
-
+            print(u"отрыть страницу невозможно, проверьте соединение с интеренетом")
 
 def CheckLinksFromPage(url, urlPrimary):
-    request = urllib2.Request(url)
-
+    request = urllib2.Request(url)#url object
     try:
-        response = urllib2.urlopen(request)
+        response = urllib2.urlopen(request)#trying open
     except BaseException as err:
         return False
     else:
@@ -75,30 +59,24 @@ def CheckLinksFromPage(url, urlPrimary):
         for data in dataUrls:
             needDelete = False
             for element in {"mailto:", "javascript:", "skype:", "#"}:
-                #print data[0][:len(element)]
                 if element == data[0][:len(element)]:
-                    #print element != data[0][len(element):]
                     needDelete = True
             if not needDelete:
                 dataUrls2.append(data)
-
-        # Conversion in absolute address
+                
         convertAllDataUrls = [urlparse.urljoin(url, urlI[0]) for urlI in dataAllUrls]
         convertDataUrls = [urlparse.urljoin(url, urlI[0]) for urlI in dataUrls2]
 
         for urlList in convertDataUrls:
             if (not (urlList in usedUrls) and not (urlList in queuedUrls) and
-                    (-1 != urlList.find(urlPrimary, 0, len(urlList))) ):  # не выходим за рамки этого сайта
+                    (-1 != urlList.find(urlPrimary, 0, len(urlList))) ):
                 queuedUrls.append(urlList)
             if( not (urlList in usedUrls)):
                 usedUrls.append(urlList)
 
         for urlList in convertAllDataUrls:
-            if ( (urlList not in convertDataUrls) ):  # не выходим за рамки этого сайта
+            if ( (urlList not in convertDataUrls) ):  
                 listOtherRef.append(urlList)
-            #if( not (urlList in usedUrls)):
-            #   usedUrls.append(urlList)
-
 
 
 def CheckLinks(urls):
