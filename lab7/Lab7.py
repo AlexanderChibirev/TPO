@@ -42,17 +42,6 @@ def CheckLinksFromPage(url, urlPrimary):
         usedUrls.append(url)
 
         content = response.read()
-
-        # Find address data
-        '''
-        Атрибут href может содержать:
-        Абсолютный URL — адрес страницы, документа или скрипта. Это наиболее распространенный вариант.
-        Относительный URL — адрес страницы, документа или скрипта
-        mailto: — e-mail адрес. Для написания письма откроется системный e-mail клиент.
-        javascript: — исполняемый скрипт
-        skype: — вызов абонента skype
-        # — локальная ссылка(якорь)
-        '''
         dataAllUrls = re.findall('href="((http|ftp)?.*?)"', content)
         dataUrls = re.findall('href="(((http|ftp)s?://)?.*?(/.*?)*)"', content)
         dataUrls2 = []
