@@ -221,8 +221,18 @@ class TriangleTest(unittest.TestCase):
 		# значение некорректное, это не треугольник, функция getType() должна вернуть "not triangle"
 		t = Triangle(0, 0, 0)
 		self.assertEqual("not triangle", t.getType())
-		
+	def testGetA(self):		
+		t = Triangle(13, 3, 3)
+		self.assertEqual(13,t.getA())
+	def testGetB(self):		
+		t = Triangle(13, 3, 3)
+		self.assertEqual(3,t.getB())
+	def testGetC(self):		
+		t = Triangle(13, 3, 3)
+		self.assertEqual(3,t.getC())
+	def testCalculatePerimeter(self):		
+		t = Triangle(13, 3, 3)
+		self.assertEqual(19, t.calculatePerimeter())
+	
 if __name__ == '__main__':
 	unittest.main()
-	
-	
