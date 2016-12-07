@@ -1,0 +1,11 @@
+javascript:alert('Hello'); 404
+http://testingcourse.ru/links/page.html 404
+http://testingcourse.ru/links/page12.html 404
+http://testingcourse.ru/links/page13.html 404
+http://testingcourse.ru/links/image.jpg 404
+http://testingcourse.ru/links/page11.html 404
+http://testingcourse.ru/links/trololo 404
+http://testingcourse.ru/links/page20.html 404
+http://testingcourse.ru/links/page15.html 404
+http://testingcourse.ru/links/page16.html 404
+http://testingcourse.ru/links/page17.html 404
