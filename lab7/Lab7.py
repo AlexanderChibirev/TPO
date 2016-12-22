@@ -89,5 +89,5 @@ def main(argv):
     WriteInFileRefError(failedUrl)
     print (u"Программа завершена")
 
-sys.argv = ["lab7.py", "http://testingcourse.ru/links/"]
+sys.argv = ["lab7.py", "http://gudsoft.ru"]
 main(sys.argv)
